@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 	"time"
 
@@ -343,6 +344,30 @@ func commandInspect(cfg *config) func(args []string) error {
 	}
 }
 
+func commandPokedex(cfg *config) func(args []string) error {
+	return func(args []string) error {
+		if len(cfg.pokedex) == 0 {
+			fmt.Println("Your Pokedex is empty.")
+			return nil
+		}
+
+		fmt.Println("Your Pokedex:")
+
+		// Collect and sort names so output is consistent
+		names := make([]string, 0, len(cfg.pokedex))
+		for name := range cfg.pokedex {
+			names = append(names, name)
+		}
+		sort.Strings(names)
+
+		for _, name := range names {
+			fmt.Printf(" - %s\n", name)
+		}
+
+		return nil
+	}
+}
+
 func main() {
 
 	cache := pokeCache.NewCache(60 * time.Second)
@@ -393,6 +418,12 @@ func main() {
 		name:        "inspect",
 		description: "View details of a caught Pokémon",
 		callback:    commandInspect(cfg),
+	}
+
+	commands["pokedex"] = cliCommand{
+		name:        "pokedex",
+		description: "List all caught Pokémon",
+		callback:    commandPokedex(cfg),
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
