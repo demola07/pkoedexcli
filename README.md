@@ -15,7 +15,7 @@ A command-line interface (CLI) application for exploring and interacting with Po
 1. Clone the repository:
 
     ```sh
-    git clone [https://github.com/yourusername/pokedexcli.git](https://github.com/yourusername/pokedexcli.git)
+    git clone https://github.com/yourusername/pokedexcli.git
     cd pokedexcli
     ```
 
